@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LoginLogout } from "./LoginLogout";
 
 export default function Navbar() {
   return (
@@ -11,9 +12,7 @@ export default function Navbar() {
           {/* <Link href="/features" className="text-gray-700 hover:text-black transition">Features</Link>
           <Link href="/dashboard" className="text-gray-700 hover:text-black transition">Dashboard</Link>
           <Link href="/lists" className="text-gray-700 hover:text-black transition">Lists</Link> */}
-          <Link href="/login" className="px-4 py-1.5 bg-black text-white rounded-xl hover:bg-gray-800 transition">
-            Log In
-          </Link>
+          <LoginLogout />
         </div>
       </div>
     </nav>
