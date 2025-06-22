@@ -9,9 +9,9 @@ export default function Navbar() {
           Watch Quest
         </Link>
         <div className="flex items-center gap-6">
-          {/* <Link href="/features" className="text-gray-700 hover:text-black transition">Features</Link>
-          <Link href="/dashboard" className="text-gray-700 hover:text-black transition">Dashboard</Link>
-          <Link href="/lists" className="text-gray-700 hover:text-black transition">Lists</Link> */}
+          <Link href="/search" className="text-white hover:text-black transition">Search</Link>
+          <Link href="/dashboard" className="text-white hover:text-black transition">Dashboard</Link>
+          {/* <Link href="/lists" className="text-white hover:text-black transition">Lists</Link> */}
           <LoginLogout />
         </div>
       </div>
