@@ -1,9 +1,11 @@
 'use client'
 
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { auth } from '@/lib/firebase'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,8 +35,9 @@ export default function LoginPage() {
 
       <button
         onClick={handleGoogleSignIn}
-        className="w-full bg-[var(--color-accent)] text-white p-2 rounded font-semibold cursor-pointer hover:bg-[var(--color-highlight)] transition-colors"
+        className="w-full bg-blue-600 text-white p-2 rounded font-semibold cursor-pointer hover:bg-blue-500 transition-colors"
       >
+        <FontAwesomeIcon icon={faGoogle} className="mr-2" />
         Sign In with Google
       </button>
     </div>
