@@ -20,8 +20,8 @@ export interface WatchedMovieDocument {
   notes?: string;
 
   runtime: number | null;
-  method?: "cinema" | "platform";
-  platform?: Platform | null;
+  method?: "Cinema" | "Platform";
+  platform?: string | null;
 
   createdAt: string;
   updatedAt: string;
