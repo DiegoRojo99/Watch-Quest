@@ -24,7 +24,6 @@ async function fetchMovieDetails(id: string): Promise<MovieDetails> {
 export default async function MovieDetailsPage({ params }: MovieDetailsProps) {
   const paramsResolved = await params;
   const movie = await fetchMovieDetails(paramsResolved.id);
-  console.log("Movie Details:", movie);
 
   return (
     <main className="text-white">
