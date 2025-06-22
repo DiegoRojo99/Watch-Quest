@@ -4,6 +4,7 @@ import { AuthProvider } from '@/hooks/AuthProvider';
 import Navbar from "./components/NavBar";
 import Footer from "./components/Footer";
 import "./globals.css";
+import "@/lib/fontawesome";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
