@@ -1,5 +1,4 @@
 // import Link from "next/link";
-
 import Image from "next/image";
 
 export default function Footer() {
@@ -14,7 +13,7 @@ export default function Footer() {
             All data is sourced from 
             <a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
               <Image
-                src="TMDB.svg"
+                src="/TMDB.svg"
                 alt="TMDB Logo"
                 width={300}
                 height={25}
