@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { adminAuth, adminDB } from "@/lib/firebase-admin"; // Your admin SDK exports
+import { adminDB } from "@/lib/firebase-admin"; // Your admin SDK exports
 import { getUserFromRequest } from "@/lib/auth-server";
 import { WatchedMovieInput } from "@/types/WatchedMovie";
 import { WatchedMovieDocument } from "@/types/firestore";
@@ -56,3 +56,30 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function GET() {
+  try {
+    const { uid } = await getUserFromRequest();
+    if (!uid) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const watchedMoviesRef = adminDB
+      .collection("users")
+      .doc(uid)
+      .collection("watchedMovies");
+
+    const snapshot = await watchedMoviesRef.orderBy("watchedDate", "desc").get();
+    const movies = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return NextResponse.json({ watchedMovies: movies });
+  } catch (error) {
+    console.error("Error fetching watched movies:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch watched movies" },
+      { status: 500 }
+    );
+  }
+}
