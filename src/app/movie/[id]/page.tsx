@@ -1,5 +1,6 @@
 import { MovieDetails } from "@/types/TMDB";
 import Image from "next/image";
+import { Genres } from "./Genres";
 
 interface MovieDetailsProps {
   params: Promise<{ id: string }>;
@@ -23,6 +24,7 @@ async function fetchMovieDetails(id: string): Promise<MovieDetails> {
 export default async function MovieDetailsPage({ params }: MovieDetailsProps) {
   const paramsResolved = await params;
   const movie = await fetchMovieDetails(paramsResolved.id);
+  console.log("Movie Details:", movie);
 
   return (
     <main className="text-white">
@@ -56,20 +58,47 @@ export default async function MovieDetailsPage({ params }: MovieDetailsProps) {
           </div>
         )}
 
-        {/* Info text box */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-12 bg-gradient-to-t from-black/90 to-transparent">
+        {/* Desktop info text box */}
+        <div className="hidden md:block absolute bottom-0 left-0 right-0 p-4 md:p-12 bg-gradient-to-t from-black/90 to-transparent">
           <h1 className="text-3xl md:text-5xl font-bold mb-2">{movie.title}</h1>
 
           <p className="mb-4 text-xs md:text-base">
-            {movie.overview || "No description available."}
+            {movie.tagline || "No tagline available."}
           </p>
 
           <div className="flex flex-wrap gap-4 text-sm md:text-base text-gray-300">
             <span>⭐ {movie.vote_average.toFixed(1)}</span>
-            <span>{new Date(movie.release_date).toLocaleDateString()}</span>
+            <span>{new Date(movie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
             <span>{formatRuntime(movie.runtime)}</span>
           </div>
+          
+          <div className="mt-4">
+            <Genres genres={movie.genres} />
+          </div>
         </div>
+
+        {/* Mobile info text box */}
+        <div className="md:hidden absolute bottom-0 left-0 right-0 p-4 md:p-12 bg-gradient-to-t from-black/90 to-transparent">
+          <h1 className="text-3xl md:text-5xl font-bold mb-2">{movie.title}</h1>
+
+          <div className="flex flex-wrap gap-4 text-sm md:text-base text-gray-300">
+            <span>⭐ {movie.vote_average.toFixed(1)}</span>
+            <span>{new Date(movie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <span>{formatRuntime(movie.runtime)}</span>
+          </div>
+
+          <p className="mt-4 text-sm md:text-base">
+            {movie.tagline || "No tagline available."}
+          </p>
+
+          <div className="mt-4">
+            <Genres genres={movie.genres} />
+          </div>
+        </div>
+      </div>
+      <div className="p-8">
+        <h2 className="text-2xl font-bold mb-4">Synopsis</h2>
+        <p className="text-gray-300 mb-6">{movie.overview || "No description available."}</p>
       </div>
     </main>
   );
