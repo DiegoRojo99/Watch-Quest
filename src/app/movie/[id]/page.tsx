@@ -2,63 +2,73 @@ import { MovieDetails } from "@/types/TMDB";
 import Image from "next/image";
 
 interface MovieDetailsProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
+}
+
+function formatRuntime(minutes: number) {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${h}h ${m}m`;
 }
 
 async function fetchMovieDetails(id: string): Promise<MovieDetails> {
   const res = await fetch(
     `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`,
-    { next: { revalidate: 60 } } // optional ISR cache
+    { next: { revalidate: 60 } }
   );
   if (!res.ok) throw new Error("Failed to fetch movie details");
   return res.json();
 }
 
 export default async function MovieDetailsPage({ params }: MovieDetailsProps) {
-  const movie = await fetchMovieDetails(params.id);
-  console.log("Movie Details:", movie);
+  const paramsResolved = await params;
+  const movie = await fetchMovieDetails(paramsResolved.id);
 
   return (
-    <main className="max-w-4xl mx-auto p-6">
-      <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>
-      <div className="flex flex-col md:flex-row gap-6">
-        {movie.poster_path ? (
-          <Image
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-            width={300}
-            height={450}
-            className="rounded shadow-lg"
-          />
-        ) : (
-          <div className="w-72 h-[450px] bg-gray-600 flex items-center justify-center text-gray-400 rounded">
-            No Image
+    <main className="text-white">
+      {/* Desktop: Backdrop full top, mobile: poster full top */}
+      <div className="relative w-full h-[60vh] md:h-[80vh]">
+        {/* Backdrop for md+ */}
+        {movie.backdrop_path && (
+          <>
+            <Image
+              src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+              alt={movie.title}
+              fill
+              sizes="(min-width: 768px) 100vw, 50vw"
+              style={{ objectFit: "cover" }}
+              priority
+            />
+          </>
+        )}
+
+        {/* Poster for mobile */}
+        {movie.poster_path && (
+          <div className="md:hidden relative w-full h-full">
+            <Image
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              style={{ objectFit: "cover" }}
+              priority
+            />
           </div>
         )}
 
-        <div className="flex-1 text-white">
-          <p className="mb-4">{movie.overview}</p>
+        {/* Info text box */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-12 bg-gradient-to-t from-black/90 to-transparent">
+          <h1 className="text-3xl md:text-5xl font-bold mb-2">{movie.title}</h1>
 
-          <p className="mb-2">
-            <strong>Release Date:</strong> {movie.release_date}
+          <p className="mb-4 text-xs md:text-base">
+            {movie.overview || "No description available."}
           </p>
 
-          <p className="mb-2">
-            <strong>Genres:</strong>{" "}
-            {movie.genres.map((g) => g.name).join(", ")}
-          </p>
-
-          <p className="mb-2">
-            <strong>Runtime:</strong> {movie.runtime} minutes
-          </p>
-
-          <p className="mb-2">
-            <strong>Rating:</strong> {movie.vote_average} / 10
-          </p>
-
-          {/* TODO: Add “Mark as Watched” button here later */}
+          <div className="flex flex-wrap gap-4 text-sm md:text-base text-gray-300">
+            <span>⭐ {movie.vote_average.toFixed(1)}</span>
+            <span>{new Date(movie.release_date).toLocaleDateString()}</span>
+            <span>{formatRuntime(movie.runtime)}</span>
+          </div>
         </div>
       </div>
     </main>
