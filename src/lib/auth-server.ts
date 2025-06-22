@@ -16,6 +16,7 @@ export async function getUserFromRequest(): Promise<{ uid: string }> {
     return { uid: decoded.uid };
   } 
   catch (error) {
+    console.error("Error verifying token:", error);
     throw new Error("Unauthorized: Invalid or expired token");
   }
 }

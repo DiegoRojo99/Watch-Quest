@@ -1,5 +1,3 @@
-import { Platform } from "./WatchedMovie";
-
 export type UserDoc = {
   uid: string;
   email: string;
