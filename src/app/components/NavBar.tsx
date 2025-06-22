@@ -25,7 +25,7 @@ export default function Navbar() {
             Dashboard
           </Link>
           {/* <Link href="/lists" className="text-white hover:text-black transition">Lists</Link> */}
-          <LoginLogout />
+          <LoginLogout mobile={false} />
         </div>
 
         {/* Mobile Hamburger Button */}
@@ -63,7 +63,7 @@ export default function Navbar() {
             Lists
           </Link> */}
           <div className="px-4 py-3">
-            <LoginLogout />
+            <LoginLogout mobile={true} />
           </div>
         </div>
       )}
