@@ -66,7 +66,7 @@ export default function WatchedMovieModal({
   return (
     <div className="fixed inset-0 bg-[rgba(0,0,0,0.75)] flex items-center justify-center z-50">
       <form className="bg-gray-900 rounded p-6 max-w-md w-full space-y-4 shadow-lg mx-2" onSubmit={handleSubmit}>
-        <h2 className="text-xl font-bold">Add "{title}" to watched</h2>
+        <h2 className="text-xl font-bold">Add {title} to watched</h2>
 
         <label className="block">
           Date watched (optional)
