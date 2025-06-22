@@ -1,6 +1,7 @@
 import { MovieDetails } from "@/types/TMDB";
 import Image from "next/image";
 import { Genres } from "./Genres";
+import WatchedMovieButton from "./WatchedMovieButton";
 
 interface MovieDetailsProps {
   params: Promise<{ id: string }>;
@@ -29,6 +30,9 @@ export default async function MovieDetailsPage({ params }: MovieDetailsProps) {
     <main className="text-white">
       {/* Desktop: Backdrop full top, mobile: poster full top */}
       <div className="relative w-full h-[60vh] md:h-[80vh]">
+        
+        <WatchedMovieButton movie={movie} />
+
         {/* Backdrop for md+ */}
         {movie.backdrop_path && (
           <>
