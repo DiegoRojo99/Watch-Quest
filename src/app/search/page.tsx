@@ -2,6 +2,7 @@
 
 import { Movie } from "@/types/TMDB";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 export default function SearchPage() {
@@ -47,11 +48,12 @@ export default function SearchPage() {
 
       <ul className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {results.map((movie) => (
-          <li key={movie.id} className="bg-gray-800 rounded overflow-hidden">
-            {movie.poster_path ? (
-              <Image
-                src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                alt={movie.title}
+          <li key={movie.id} className="bg-gray-800 rounded overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+            <Link href={`/movie/${movie.id}`}>
+              {movie.poster_path ? (
+                <Image
+                  src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                  alt={movie.title}
                 className="w-full h-auto"
                 width={300}
                 height={450}
@@ -67,9 +69,10 @@ export default function SearchPage() {
                 {movie.release_date?.slice(0, 4)}
               </p>
             </div>
-          </li>
-        ))}
-      </ul>
-    </main>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </main>
   );
 }
