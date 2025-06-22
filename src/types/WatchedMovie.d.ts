@@ -1,14 +1,4 @@
-import { Platform } from "./WatchedMovie";
-
-export type UserDoc = {
-  uid: string;
-  email: string;
-  displayName: string;
-  photoURL?: string;
-  createdAt: string; // ISO string
-};
-
-export interface WatchedMovieDocument {
+export interface WatchedMovieInput {
   movieId: number;
   movieTitle: string;
   moviePoster: string | null;
@@ -22,7 +12,22 @@ export interface WatchedMovieDocument {
   runtime: number | null;
   method?: "cinema" | "platform";
   platform?: Platform | null;
+}
 
+export interface WatchedMovieInsert extends WatchedMovieInput {
   createdAt: string;
   updatedAt: string;
 }
+
+export type Platform =
+  | "Netflix"
+  | "Amazon Prime"
+  | "Disney+"
+  | "HBO Max"
+  | "Hulu"
+  | "Apple TV+"
+  | "Paramount+"
+  | "Peacock"
+  | "YouTube"
+  | "SKY Showtime"
+  | "Other";
