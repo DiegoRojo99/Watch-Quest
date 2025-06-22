@@ -1,4 +1,4 @@
-import Link from "next/link";
+// import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -8,11 +8,11 @@ export default function Footer() {
           &copy; {new Date().getFullYear()} Watch Quest. All rights reserved.
         </div>
         <div className="flex gap-4">
-          <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
+          {/* <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
           <Link href="/terms" className="hover:underline">Terms of Service</Link>
           <Link href="https://github.com/diegorojo99/watch-quest" target="_blank" rel="noopener noreferrer" className="hover:underline">
             GitHub
-          </Link>
+          </Link> */}
         </div>
       </div>
     </footer>
