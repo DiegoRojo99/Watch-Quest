@@ -4,7 +4,7 @@ import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import Link from "next/link";
 
-export function LoginLogout() {
+export function LoginLogout({mobile = false}: { mobile?: boolean }) {
   const { user, userLoading } = useAuth();
   
   const handleLogout = async () => {
@@ -20,7 +20,7 @@ export function LoginLogout() {
     return (
       <button
         onClick={handleLogout}
-        className="px-4 py-1.5 bg-black text-white rounded-xl hover:bg-gray-800 transition"
+        className={`text-white rounded-xl ${!mobile ? "px-4 py-1.5 bg-black hover:bg-gray-800" : ""} transition`}
       >
         Log Out
       </button>
@@ -28,7 +28,7 @@ export function LoginLogout() {
   }
 
   return (
-    <Link href="/login" className="px-4 py-1.5 bg-black text-white rounded-xl hover:bg-gray-800 transition">
+    <Link href="/login" className={`text-white rounded-xl ${!mobile ? "px-4 py-1.5 bg-black hover:bg-gray-800" : ""} transition`}>
       Log In
     </Link>
   );
