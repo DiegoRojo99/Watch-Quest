@@ -4,6 +4,7 @@ import WatchedMovieModal from "@/app/components/modals/WatchedMovieModal";
 import { MovieDetails } from "@/types/TMDB";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface WatchedMovieButtonProps {
@@ -12,6 +13,12 @@ interface WatchedMovieButtonProps {
 
 export default function WatchedMovieButton({ movie }: WatchedMovieButtonProps) {
   const [modalOpen, setModalOpen] = useState(false);
+  const router = useRouter();
+
+  function handleSuccess() {
+    alert("Movie added to watched list!");
+    router.push("/watched-movies");
+  }
 
   return (
     <>
@@ -28,7 +35,7 @@ export default function WatchedMovieButton({ movie }: WatchedMovieButtonProps) {
           title={movie.title}
           posterPath={movie.poster_path}
           onClose={() => setModalOpen(false)}
-          onSuccess={() => alert("Added!")}
+          onSuccess={handleSuccess}
         />
       )}
     </>
