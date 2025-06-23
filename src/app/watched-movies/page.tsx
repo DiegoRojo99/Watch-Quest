@@ -53,17 +53,17 @@ export default function WatchedMoviesList() {
   if (movies.length === 0) return <p>No watched movies found.</p>;
 
   return (
-    <ul className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 m-2">
+    <ul className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 m-2">
       {movies.map((movie) => (
         <li key={movie.movieId} className="flex flex-col items-center">
           {movie.moviePoster ? (
             <Image
-              src={`https://image.tmdb.org/t/p/w92${movie.moviePoster}`}
+              src={`https://image.tmdb.org/t/p/w300${movie.moviePoster}`}
               alt={movie.movieTitle}
               className="w-full h-auto rounded"
               loading="lazy"
-              width={92}
-              height={138}
+              width={300}
+              height={450}
             />
           ) : (
             <div className="w-20 h-28 bg-gray-700 rounded flex items-center justify-center text-xs text-gray-400">
