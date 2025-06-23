@@ -21,8 +21,8 @@ export default function Navbar() {
           <Link href="/search" className="text-white hover:text-black transition">
             Search
           </Link>
-          <Link href="/dashboard" className="text-white hover:text-black transition">
-            Dashboard
+          <Link href="/watched-movies" className="text-white hover:text-black transition">
+            Watched
           </Link>
           {/* <Link href="/lists" className="text-white hover:text-black transition">Lists</Link> */}
           <LoginLogout mobile={false} />
@@ -49,11 +49,11 @@ export default function Navbar() {
             Search
           </Link>
           <Link
-            href="/dashboard"
+            href="/watched-movies"
             className="block px-4 py-3 text-white hover:bg-blue-800 transition"
             onClick={() => setIsOpen(false)}
           >
-            Dashboard
+            Watched
           </Link>
           {/* <Link
             href="/lists"
