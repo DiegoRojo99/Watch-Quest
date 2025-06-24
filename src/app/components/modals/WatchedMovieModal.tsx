@@ -1,8 +1,10 @@
 "use client";
 
-import { WatchedMovieInput } from "@/types/WatchedMovie";
+import { Platform, WatchedMovieInput } from "@/types/WatchedMovie";
 import { getIdToken } from "@/utils/getIdToken";
 import { useState } from "react";
+import { SliderRating } from "../rating/SliderRating";
+import PlatformSelector from "../PlatformSelector";
 
 interface WatchedMovieModalProps {
   movieId: number;
@@ -19,7 +21,8 @@ export default function WatchedMovieModal({
   onSuccess,
 }: WatchedMovieModalProps) {
   const [dateWatched, setDateWatched] = useState<string>("");
-  const [platform, setPlatform] = useState<string>("Netflix");
+  const [method, setMethod] = useState<'Cinema' | 'Streaming Platform' | 'Other'>("Cinema");
+  const [platform, setPlatform] = useState<Platform>("Netflix");
   const [rating, setRating] = useState<number>(0);
   const [notes, setNotes] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -33,12 +36,14 @@ export default function WatchedMovieModal({
     try {
       const token = await getIdToken();
       if (!token) throw new Error("Unauthorized: No valid token found");
+      if (!movieId) throw new Error("Movie ID is required");
+      if (!['Cinema', 'Streaming Platform', 'Other'].includes(method)) throw new Error("Watch method is required");
 
       const parsedData: WatchedMovieInput = {
         movieId,
         watchedDate: dateWatched || null,
-        method: platform === "Cinema" ? "Cinema" : "Platform",
-        platform: platform !== "Cinema" ? platform : null,
+        method: method,
+        platform: method !== "Cinema" ? platform : null,
         rating,
         notes,
       };
@@ -65,7 +70,8 @@ export default function WatchedMovieModal({
 
   return (
     <div className="fixed inset-0 bg-[rgba(0,0,0,0.75)] flex items-center justify-center z-50">
-      <form className="bg-gray-900 rounded p-6 max-w-md w-full space-y-4 shadow-lg mx-2" onSubmit={handleSubmit}>
+      <form className="bg-gray-900 rounded p-6 max-w-xl w-full space-y-4 shadow-lg mx-2 
+      max-h-[85vh] overflow-y-auto" onSubmit={handleSubmit}>
         <h2 className="text-xl font-bold">Add {title} to watched</h2>
 
         <label className="block">
@@ -79,31 +85,32 @@ export default function WatchedMovieModal({
         </label>
 
         <label className="block">
-          Platform
+          Method
           <select
-            value={platform}
-            onChange={(e) => setPlatform(e.target.value)}
+            value={method}
+            onChange={(e) => setMethod(e.target.value as 'Cinema' | 'Streaming Platform' | 'Other')}
             className="w-full rounded p-2 bg-gray-800 border border-gray-700"
           >
-            <option value="Netflix">Netflix</option>
-            <option value="Amazon Prime">Amazon Prime</option>
-            <option value="Hulu">Hulu</option>
             <option value="Cinema">Cinema</option>
+            <option value="Streaming Platform">Streaming Platform</option>
             <option value="Other">Other</option>
           </select>
         </label>
 
+        { method === "Streaming Platform" && (
+          <label className="block">
+            Platform
+              <PlatformSelector
+                platform={platform}
+                setPlatform={setPlatform}
+                showSelector={method === "Streaming Platform"}
+              />
+          </label>
+        )}
+
         <label className="block">
           Rating
-          <input
-            type="number"
-            min={0}
-            max={10}
-            step={0.1}
-            value={rating}
-            onChange={(e) => setRating(parseFloat(e.target.value))}
-            className="w-full rounded p-2 bg-gray-800 border border-gray-700"
-          />
+          <SliderRating initial={rating} onChange={setRating} />
         </label>
 
         <label className="block">
