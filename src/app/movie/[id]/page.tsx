@@ -1,7 +1,8 @@
-import { MovieDetails } from "@/types/TMDB";
+import { MovieDetailsWithCastAndSimilar } from "@/types/TMDB";
 import Image from "next/image";
 import { Genres } from "./Genres";
 import WatchedMovieButton from "./WatchedMovieButton";
+import { CastDisplay } from "./CastDisplay";
 
 interface MovieDetailsProps {
   params: Promise<{ id: string }>;
@@ -13,9 +14,9 @@ function formatRuntime(minutes: number) {
   return `${h}h ${m}m`;
 }
 
-async function fetchMovieDetails(id: string): Promise<MovieDetails> {
+async function fetchMovieDetails(id: string): Promise<MovieDetailsWithCastAndSimilar> {
   const res = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`,
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&append_to_response=credits%2Csimilar&language=en-US`,
     { next: { revalidate: 60 } }
   );
   if (!res.ok) throw new Error("Failed to fetch movie details");
@@ -27,7 +28,7 @@ export default async function MovieDetailsPage({ params }: MovieDetailsProps) {
   const movie = await fetchMovieDetails(paramsResolved.id);
 
   return (
-    <main className="text-white">
+    <main className="text-white pb-4">
       {/* Desktop: Backdrop full top, mobile: poster full top */}
       <div className="relative w-full h-[60vh] md:h-[80vh]">
         
@@ -99,10 +100,13 @@ export default async function MovieDetailsPage({ params }: MovieDetailsProps) {
           </div>
         </div>
       </div>
-      <div className="p-8">
+      
+      <div className="pt-6 px-8">
         <h2 className="text-2xl font-bold mb-4">Synopsis</h2>
         <p className="text-gray-300 mb-6">{movie.overview || "No description available."}</p>
       </div>
+
+      <CastDisplay cast={movie.credits.cast} />
     </main>
   );
 }
