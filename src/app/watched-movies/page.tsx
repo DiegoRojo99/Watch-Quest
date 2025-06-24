@@ -53,9 +53,9 @@ export default function WatchedMoviesList() {
   if (movies.length === 0) return <p>No watched movies found.</p>;
 
   return (
-    <ul className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 m-2">
+    <ul className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 mx-2 my-4">
       {movies.map((movie) => (
-        <li key={movie.movieId} className="flex flex-col items-center">
+        <li key={movie.movieId} className="flex flex-col items-center h-full">
           {movie.moviePoster ? (
             <Image
               src={`https://image.tmdb.org/t/p/w300${movie.moviePoster}`}
@@ -70,7 +70,8 @@ export default function WatchedMoviesList() {
               No Image
             </div>
           )}
-          <div className="space-y-1 text-center w-full border p-2 rounded">
+          <div className="text-center w-full border p-2 rounded h-full 
+          flex flex-col justify-between space-y-1">
             <h3 className="font-semibold">{movie.movieTitle}</h3>
             {movie.watchedDate && (
               <p className="text-sm text-gray-400">

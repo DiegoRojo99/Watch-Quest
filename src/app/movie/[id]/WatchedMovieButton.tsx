@@ -23,7 +23,8 @@ export default function WatchedMovieButton({ movie }: WatchedMovieButtonProps) {
   return (
     <>
       <button
-        className="absolute z-5 top-4 right-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="absolute z-5 top-4 right-4 bg-blue-600 hover:bg-blue-700 
+        text-white font-bold py-2 px-4 rounded cursor-pointer shadow-lg transition-all duration-200"
         onClick={() => setModalOpen(true)}
       >
         <FontAwesomeIcon icon={faEye}/>
