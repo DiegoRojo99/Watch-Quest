@@ -1,3 +1,5 @@
+import { Platform } from "./WatchedMovie";
+
 export type UserDoc = {
   uid: string;
   email: string;
@@ -18,8 +20,8 @@ export interface WatchedMovieDocument {
   notes?: string;
 
   runtime: number | null;
-  method?: "Cinema" | "Platform";
-  platform?: string | null;
+  method?: "Cinema" | "Streaming Platform" | 'Other';
+  platform?: Platform | null;
 
   createdAt: string;
   updatedAt: string;

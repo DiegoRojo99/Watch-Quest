@@ -5,8 +5,8 @@ export interface WatchedMovieInput {
   rating: number | null;
   notes?: string;
 
-  method?: "Cinema" | "Platform";
-  platform?: string | null;
+  method?: "Cinema" | "Streaming Platform" | 'Other';
+  platform?: Platform | null;
 }
 
 export interface WatchedMovieInsert extends WatchedMovieInput {
@@ -24,5 +24,6 @@ export type Platform =
   | "Paramount+"
   | "Peacock"
   | "YouTube"
-  | "SKY Showtime"
+  | "Sky Showtime"
+  | "Movistar"
   | "Other";
