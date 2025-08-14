@@ -14,6 +14,25 @@ export interface WatchedMovieInsert extends WatchedMovieInput {
   updatedAt: string;
 }
 
+export interface WatchedMovieDocument {
+  movieId: number;
+  movieTitle: string;
+  moviePoster: string | null;
+  movieReleaseDate: string | null;
+  movieGenres: string[];
+
+  watchedDate: string | null;
+  rating: number | null;
+  notes?: string;
+
+  runtime: number | null;
+  method?: "Cinema" | "Streaming Platform" | 'Other';
+  platform?: Platform | null;
+
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type Platform =
   | "Netflix"
   | "Amazon Prime"

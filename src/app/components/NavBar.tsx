@@ -27,6 +27,9 @@ export default function Navbar() {
           <Link href="/diary" className="text-white hover:text-black transition">
             Diary
           </Link>
+          <Link href="/import-letterboxd" className="text-white hover:text-black transition">
+            Import
+          </Link>
           {/* <Link href="/lists" className="text-white hover:text-black transition">Lists</Link> */}
           <LoginLogout mobile={false} />
         </div>
@@ -64,6 +67,13 @@ export default function Navbar() {
             onClick={() => setIsOpen(false)}
           >
             Diary
+          </Link>
+          <Link
+            href="/import-letterboxd"
+            className="block px-4 py-3 text-white hover:bg-blue-800 transition"
+            onClick={() => setIsOpen(false)}
+          >
+            Import
           </Link>
           {/* <Link
             href="/lists"
