@@ -27,6 +27,68 @@ interface TMDBGenre {
   name: string;
 }
 
+function shouldSkipMovie(title: string, tmdbMovie: TMDBSearchResult): boolean {
+  const lowercaseTitle = title.toLowerCase();
+  const lowercaseTmdbTitle = tmdbMovie.title.toLowerCase();
+  
+  // Skip patterns that indicate documentaries, premieres, behind-the-scenes content
+  const skipPatterns = [
+    'world premiere',
+    'red carpet',
+    'behind the scenes',
+    'making of',
+    'documentary',
+    'featurette',
+    'special features',
+    'deleted scenes',
+    'blooper',
+    'gag reel',
+    'press conference',
+    'interview',
+    'trailer',
+    'teaser',
+    'clip',
+    'preview',
+    'promo',
+    'commercial',
+    'advertisement',
+    'tv spot',
+    'making-of',
+    'b-roll',
+    'press kit',
+    'junket',
+    'screening',
+    'q&a',
+    'panel',
+    'event',
+    'presentation',
+    'ceremony',
+    'awards',
+    'compilation',
+    'retrospective',
+    'tribute',
+    'memorial',
+    'anniversary special',
+    'recap',
+    'highlights',
+    'best of',
+    'outtakes',
+    'alternate ending',
+    'director\'s commentary',
+    'cast commentary'
+  ];
+
+  // Check if the title contains any skip patterns
+  const hasSkipPattern = skipPatterns.some(pattern => 
+    lowercaseTitle.includes(pattern) || lowercaseTmdbTitle.includes(pattern)
+  );
+
+  // Skip very short runtimes (likely trailers/clips)
+  // We'll check this after getting movie details, but for now check title patterns
+  
+  return hasSkipPattern;
+}
+
 async function searchMovieOnTMDB(title: string, year: string): Promise<TMDBSearchResult | null> {
   try {
     const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -41,9 +103,7 @@ async function searchMovieOnTMDB(title: string, year: string): Promise<TMDBSearc
       .trim();
     
     const encodedTitle = encodeURIComponent(cleanTitle);
-    
     const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodedTitle}&year=${year}`;
-    
     const response = await fetch(searchUrl);
     
     if (!response.ok) {
@@ -248,8 +308,22 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
+        // Check if this should be skipped (documentaries, premieres, etc.)
+        if (shouldSkipMovie(movieRow.Name, tmdbMovie)) {
+          results.failed++;
+          results.errors.push(`Skipped complementary content: ${movieRow.Name} (${movieRow.Year})`);
+          continue;
+        }
+
         // Get movie details including runtime
         const movieDetails = await getMovieDetails(tmdbMovie.id);
+
+        // Additional runtime-based filtering
+        if (movieDetails.runtime && movieDetails.runtime < 40) {
+          results.failed++;
+          results.errors.push(`Skipped short content (${movieDetails.runtime}min): ${movieRow.Name} (${movieRow.Year})`);
+          continue;
+        }
 
         // Get genre names
         const genreNames = await getGenreNames(tmdbMovie.genre_ids);
