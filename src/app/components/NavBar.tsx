@@ -78,6 +78,13 @@ export default function Navbar() {
           >
             Import
           </Link>
+          <Link
+            href="/dashboard"
+            className="block px-4 py-3 text-white hover:bg-blue-800 transition"
+            onClick={() => setIsOpen(false)}
+          >
+            Dashboard
+          </Link>
           {/* <Link
             href="/lists"
             className="block px-4 py-3 text-white hover:bg-blue-800 transition"
