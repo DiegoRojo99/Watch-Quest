@@ -27,6 +27,13 @@ function formatRuntime(totalMinutes: number): string {
   return parts.join(', ');
 }
 
+interface MovieData {
+  runtime?: number;
+  rating?: number | null;
+  watchedDate?: string;
+  movieGenres?: string[];
+}
+
 export async function GET(request: NextRequest) {
   try {
     // Verify user authentication
@@ -57,7 +64,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ stats: emptyStats });
     }
 
-    const movies = moviesSnapshot.docs.map(doc => doc.data());
+    const movies = moviesSnapshot.docs.map(doc => doc.data()) as MovieData[];
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
@@ -70,7 +77,7 @@ export async function GET(request: NextRequest) {
     let moviesThisYear = 0;
     const genreCounts = new Map<string, number>();
 
-    movies.forEach((movie: any) => {
+    movies.forEach((movie: MovieData) => {
       // Total runtime
       if (movie.runtime && typeof movie.runtime === 'number') {
         totalRuntimeMinutes += movie.runtime;

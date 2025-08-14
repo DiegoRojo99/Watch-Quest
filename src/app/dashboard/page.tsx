@@ -36,7 +36,7 @@ export default function Dashboard() {
     if (!userLoading && !user) {
       router.push("/login");
     }
-  }, [user, userLoading]);
+  }, [user, userLoading, router]);
 
   useEffect(() => {
     async function fetchStats() {
@@ -75,7 +75,7 @@ export default function Dashboard() {
         <h1 className="text-3xl font-bold text-white mb-2">
           Welcome back, {user.displayName || 'Movie Lover'}!
         </h1>
-        <p className="text-gray-400">Here's your movie watching journey at a glance</p>
+        <p className="text-gray-400">Here&apos;s your movie watching journey at a glance</p>
       </div>
 
       {loading ? (
@@ -151,7 +151,7 @@ export default function Dashboard() {
             </div>
             {stats.topGenres.length > 0 ? (
               <div className="space-y-2">
-                {stats.topGenres.map((genre, index) => (
+                {stats.topGenres.map((genre) => (
                   <div key={genre.genre} className="flex justify-between items-center">
                     <span className="text-gray-300">{genre.genre}</span>
                     <span className="bg-pink-600 text-white text-xs px-2 py-1 rounded-full">

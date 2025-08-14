@@ -89,7 +89,7 @@ export default function LetterboxdImport() {
         <h2 className="text-xl font-semibold mb-4">How to export from Letterboxd:</h2>
         <ol className="list-decimal list-inside space-y-2 text-gray-300">
           <li>Go to your Letterboxd profile settings</li>
-          <li>Navigate to the "Data" or "Export" section</li>
+          <li>Navigate to the &quot;Data&quot; or &quot;Export&quot; section</li>
           <li>Export your <strong>diary.csv</strong> (for movies with dates) or <strong>watched.csv</strong> (for all watched movies)</li>
           <li>Download the CSV file and upload it below</li>
         </ol>

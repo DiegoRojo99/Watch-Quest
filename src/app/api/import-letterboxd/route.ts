@@ -171,20 +171,20 @@ function parseLetterboxdCSV(csvContent: string): LetterboxdMovieRow[] {
     if (lines[i].trim() === '') continue; // Skip empty lines
     
     const values = parseCSVLine(lines[i]);
-    const movie: any = {};
+    const movie: Record<string, string> = {};
     
     headers.forEach((header, index) => {
       movie[header] = values[index] || '';
     });
     
-    movies.push(movie as LetterboxdMovieRow);
+    movies.push(movie as unknown as LetterboxdMovieRow);
   }
   
   return movies;
 }
 
-function cleanFirestoreData(data: any): any {
-  const cleaned: any = {};
+function cleanFirestoreData(data: Record<string, unknown>): Record<string, unknown> {
+  const cleaned: Record<string, unknown> = {};
   
   for (const [key, value] of Object.entries(data)) {
     if (value !== undefined) {
@@ -227,11 +227,11 @@ export async function POST(request: NextRequest) {
     // Get current user's watched movies
     const userMoviesRef = adminDB.collection('users').doc(userId).collection('watchedMovies');
     const existingMoviesSnapshot = await userMoviesRef.get();
-    const existingMovies = new Map<number, any>();
+    const existingMovies = new Map<number, { docId: string; [key: string]: unknown }>();
     
-    existingMoviesSnapshot.forEach((doc: any) => {
+    existingMoviesSnapshot.forEach((doc) => {
       const data = doc.data();
-      existingMovies.set(data.movieId, { docId: doc.id, ...data });
+      existingMovies.set(data.movieId as number, { docId: doc.id, ...data });
     });
 
     // Process each movie
@@ -310,7 +310,7 @@ export async function POST(request: NextRequest) {
             ...movieData,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
-          }) as WatchedMovieDocument;
+          });
           
           await userMoviesRef.add(newMovieData);
           results.imported++;

@@ -1,6 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { adminDB } from "@/lib/firebase-admin";
 import { getUserFromRequest } from "@/lib/auth-server";
+
+interface DiaryMovie {
+  id: string;
+  watchedDate: string;
+  [key: string]: unknown;
+}
+
+interface GroupedMovies {
+  monthYear: string;
+  displayName: string;
+  movies: DiaryMovie[];
+}
 
 export async function GET() {
   try {
@@ -23,10 +35,10 @@ export async function GET() {
     const movies = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    }));
+    })) as DiaryMovie[];
 
     // Group movies by month-year
-    const groupedMovies = movies.reduce((acc: any, movie: any) => {
+    const groupedMovies = movies.reduce((acc: Record<string, GroupedMovies>, movie: DiaryMovie) => {
       if (movie.watchedDate) {
         const date = new Date(movie.watchedDate);
         const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
@@ -45,7 +57,7 @@ export async function GET() {
     }, {});
 
     // Convert to array and sort by month-year descending
-    const groupedArray = Object.values(groupedMovies).sort((a: any, b: any) => 
+    const groupedArray = Object.values(groupedMovies).sort((a: GroupedMovies, b: GroupedMovies) => 
       b.monthYear.localeCompare(a.monthYear)
     );
 

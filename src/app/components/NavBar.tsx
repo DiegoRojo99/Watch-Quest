@@ -30,6 +30,9 @@ export default function Navbar() {
           <Link href="/import-letterboxd" className="text-white hover:text-black transition">
             Import
           </Link>
+          <Link href="/dashboard" className="text-white hover:text-black transition">
+            Dashboard
+          </Link>
           {/* <Link href="/lists" className="text-white hover:text-black transition">Lists</Link> */}
           <LoginLogout mobile={false} />
         </div>
